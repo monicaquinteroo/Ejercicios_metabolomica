@@ -1,0 +1,40 @@
+2+2
+3^2
+#notaaaas
+mujeres <- 18 #objeto 
+Hombres <- 3
+total Hombres + mujeres 
+total Hombres+mujeres
+total Hombres + mujeres
+Hombres + mujeres
+
+#################  ejercicio 1
+CHO <- 535000
+VERO <- 1350000
+Total_celulas <- CHO+VERO  #creando el ambiente
+Total_celulas #ejecuta la accion 
+
+####### ejercicio 2
+x<- 35
+y <- 22
+w<-"34" #caracter entre comillas
+z<-"25"
+x+y
+w+z
+
+#######
+# TABLA datafre
+#vctor = columna (nombre y altura)
+Nombre<-c("Renata", "Diego", "Isa", "Lidia")
+Altura<-c(1.63,1.80,1.67,1.48)
+#primero l nombre de la columna, l objeto que se aigno
+Tabla<-data.frame(Nombre= Nombre, Altura=Altura)
+#ya se hizo el objeto llamado tabla
+View(Tabla) #Para viualizar la tabla
+head(Tabla)#salen ls  6 valores mas altos, solo se ven n el codigo ue corrio, no en una pestaña
+
+############# Ejerciio 3 
+Grupo<-c("Perro", "Gato", "CHO", "Vero")
+Valor<-c(12,25,530000,1350000)
+Tabla2<-data.frame(Grupo=Grupo, Valor=Valor)
+View(Tabla2)
