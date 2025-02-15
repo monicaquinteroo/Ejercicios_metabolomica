@@ -1,0 +1,23 @@
+#install.packages("pacman")   (Se pone el gato después de instalarlo)
+library("pacman")
+p_load("readr")
+Datos_PCR <- read.csv(file = "https://raw.githubusercontent.com/ManuelLaraMVZ/Transcript-mica/refs/heads/main/Resultados_tiempo_real.csv")
+head(Datos_PCR)
+
+p_load("dplyr")
+
+Tabla_filtrada <- Datos_PCR %>%
+ select("Ciclos", "Cb")
+
+Tabla_filtrada
+
+p_load("ggplot2")
+ggplot(Tabla_filtrada, aes(x = Ciclos, y = Cb)) +
+  geom_line(color = "blue", size = 1) +  # Línea azul  # el + es una capa 
+  geom_point(color = "pink", size = 2) +  # Puntos rojos
+  labs(title = "Curva de Amplificación qPCR",  #labels de los titulos 
+       subtitle = "Creo: Monica Quintero",
+       caption = "Muestra de cerebelo",
+       x = "Número de Ciclos",
+       y = "Fluorescencia (Cb)") +
+  theme_minimal()  #estilo minimalista 
