@@ -1,0 +1,9 @@
+#tarea dataframe 16 de febrero 
+Motivo_de_muerte <- c("Falla sistema urinario", "Neoplasia", "Infeccioso", "Trauma", "Falla sistema cardiovascular", "Muerte subita", "Cuerpo extraño")
+edad_0_4 <- c(16, 13, 23, 19, 4, 3, 1)
+edad_5_9 <- c(33, 23, 15, 5, 6, 3, 5)
+edad_10_14 <- c(47, 50, 13, 3, 9, 1, 0)
+edad_15_o_mas <- c(43, 37, 2, 1, 2, 0, 0)
+
+Tabla <- data.frame(Motivo_de_muerte, edad_0_4, edad_5_9, edad_10_14, edad_15_o_mas)
+View(Tabla)
