@@ -1,0 +1,74 @@
+##Analisis PCR
+
+#install.packages("pacman")
+library("pacman")
+
+p_load("readr",
+       "dplyr",
+       "ggplot2")
+
+PCR <- read.csv(file= "https://raw.githubusercontent.com/ManuelLaraMVZ/Transcript-mica/main/datos_miRNAs.csv")
+#datos de PCR pero de microRNAs, en 3 muestras de pacientes e condiciones control y tratamiento. Valores de CT. 
+#objetivo= ver los cambios
+#1. promedio de condicion y tratamiento 
+#2. delta CT (interes- referencia) para ambas condiciones
+#3. obtener el 2^-deltaCT de ambas condiciones 
+#4. 2^deltadeltaCT. trataminto / control 
+
+head(PCR)
+
+Gen_ref<- PCR %>%     #cmnd + shift + m = %>% create un objeto que se llame gen ref a partir de y me filtra las columnas cndicion
+  filter(Condicion == "Control") %>%   # sea exactamente igual ==
+  select(-2) %>%  #se eleimina la columna de cndicion pq sobre esa ya se filtraron los datos, todos son de condicion
+  filter(Gen == "U6 snRNA-001973")
+  
+Gen_ref
+
+Gen_int <- PCR %>% 
+  filter(Condicion == "Target") %>%  filtra
+  select(-2)
+
+head(Gen_int)
+
+#PASO 1.sacar los promedios 
+####REFERENCIA
+
+Mean_ref <- Gen_ref %>%  #al U6 que el control se pormedie y tratamiento se promedie. Crea una nueva columna
+  mutate(Prom_Cx=(Cx1+Cx2+Cx3)/3,#hace una nuea columna y se le asiga la funcion de promedio 
+  Prom_Tx = (T1+T2+T3)/3) %>% 
+select("Gen","Prom_Cx", "Prom_Tx")
+Mean_ref
+
+####INTERES
+
+Mean_int <- Gen_int %>%  #al U6 que el control se pormedie y tratamiento se promedie. Crea una nueva columna
+  mutate(Prom_Cx=(Cx1+Cx2+Cx3)/3,#hace una nuea columna y se le asiga la funcion de promedio 
+         Prom_Tx = (T1+T2+T3)/3) %>% 
+  select("Gen","Prom_Cx", "Prom_Tx")
+head(Mean_int)
+
+#PASO 2. CT interes menos CTreferencia para ambas condiciones 
+
+Analisis <- Mean_int %>% 
+  mutate(DCT_Cx = Mean_int $Prom_Cx - Mean_ref$Prom_Cx, #crea nueva columna.. Signo de pesos selecciona columna (prom Cx -referencia)
+         DCT_Tx = Mean_int $Prom_Tx - Mean_ref$Prom_Tx,
+         DosDCT_Cx= 2^-(DCT_Cx), 
+         DosDCT_Tx= 2^-(DCT_Tx)) %>%  #PASO 3. 2-^CT de ambas condiciones
+  mutate(DosDDCT = DosDCT_Tx/DosDCT_Cx) #PASO 4. 
+
+head(Analisis) ## para llamarlo
+
+Grafica_1 <- ggplot(Analisis,
+                    mapping= aes(x = DosDCT_Cx,
+                                 y = DosDCT_Tx)) +
+  geom_point()
+
+Grafica_1. ##hay que llmarlo SIEMPRE PARA OBSERVARLO
+
+
+
+
+
+
+  
+  
