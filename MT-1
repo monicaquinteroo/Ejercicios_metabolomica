@@ -1,0 +1,24 @@
+---
+title: "MT-1"
+author: "Monica Quintero"
+date: "2025-03-05"
+output: html_document
+---
+```{r}
+
+Raza <- c("Border Colie", "Schnauzer", "Gran Danes", "Chihuahua", "Criollo", "Cocker", "Labrador", "Golden retriever", "Pastor aleman", "Huskey", "Beagle", "Rottweiler", "Corgie", "Chow Chow")
+Total <- c(3,9,3,4,5,3,6,7,8,8,1,4,1,1)
+Edad <- c(4,3.5,3,7,4.5,4,7,3,4, 5,2,5,1.5,3)
+
+Razas_perros <- data.frame(Raza,Total,Edad)
+View(Razas_perros)
+
+```
+```{r}
+Prom_total <- mean(Razas_perros$Total)
+Prom_total
+
+Prom_edad <- mean(Razas_perros$Edad)
+Prom_edad
+```
+
