@@ -1,0 +1,107 @@
+```{r}
+install.packages("pacman")
+library("pacman")
+```
+
+```{r}
+p_load("vroom", 
+       "dplyr",  
+       "ggplot2",
+       "tidyr")
+```
+llamar a base de datos 
+
+```{r}
+Curvas_amplif <- vroom(file = "https://raw.githubusercontent.com/ManuelLaraMVZ/resultados_PCR_practica/refs/heads/main/Amplif_grupo2_17022025.csv", delim = ",")
+head(Curvas_amplif)
+
+```
+
+Modificar base de datos 
+
+```{r}
+Curvas_amplif2 <- Curvas_amplif %>% 
+  mutate (Ciclos = Cycle, Manuel = A1, Regina = B1, Marian = C1, Ricardo = D1, Neto = E1, Johan = H1) %>% 
+  select(-Cycle:-H1)
+Curvas_amplif2
+```
+Reordenamiento de datos
+1. seleccionar los datos a reordenar (variables dependientes)
+2. agrupar todas las variables por nombre
+3. agrupar todas las variables por ciclo 
+
+```{r}
+Curvas_amplif3 <- Curvas_amplif2 %>% 
+  pivot_longer(cols = -Ciclos,
+               names_to = "Muestras",
+               values_to = "Fluorescencias")
+Curvas_amplif3
+```
+Gráfica 
+
+```{r}
+Grafica_amplif <- ggplot(data= Curvas_amplif3,
+                         mapping = aes(x= Ciclos,
+                                       y=Fluorescencias,
+                                       color= Muestras))+
+  geom_line(linewidth = 1.5)
+Grafica_amplif
+```
+
+Mejorar la grafica
+```{r}
+Umbral_ciclos <- 200
+
+
+Grafica_amplif2 <- Grafica_amplif + 
+  geom_hline (yintercept = Umbral_ciclos, linetype = "dashed", color = "#900C3F")+
+theme_classic()+
+  labs (title = "Curvas de amplificación RT-qPCR",
+        subtitle = "Todas las muestras",
+        caption = "Diseñaron : Mónica, Marian, Sofia y Laura",
+        x= "Ciclos",
+        y = "Fluorescencia (u.a)")+
+  theme(axis.line = element_line(size = 1.2, color = "black"),
+        axis.title = element_text(face = "bold"),
+        axis.text = element_text(face = "bold"),
+        legend.title = element_text(face = "bold"),
+        legend.text = element_text(face = "bold"))+
+  scale_x_continuous(breaks = seq(min(Curvas_amplif3$Ciclos),
+                                  max(Curvas_amplif3$Ciclos),
+                                  by = 5))+
+  scale_y_continuous(breaks = seq(min(Curvas_amplif3$Fluorescencias),
+                                  max(Curvas_amplif3$Fluorescencias),
+                                  by = 500),
+                     labels = scales::number_format(accuracy =500))
+Grafica_amplif2
+```
+Grafica de los datos del equipo 
+```{r}
+Grafica_amplif_equipo <- ggplot(Curvas_amplif2, aes(x= Ciclos)) +
+  geom_line(aes(y= Marian, color = "Marian"), linewidth = 1.2) +
+  geom_line(aes(y= Manuel, color = "Manuel"), linewidth = 1.2) +
+  geom_hline(yintercept = Umbral_ciclos, linetype = "dashed", color = "#900C3F") +
+  theme_classic() +
+  labs(title = "Curvas de amplificación RT-qPCR",
+       subtitle = "Muestra cerebro",
+       caption = "Diseñaron : Mónica, Marian, Sofia y Laura",
+       x = "Ciclos",
+       y = "Fluorescencia (u.a)",
+       color = "Muestras") +  # Título de la leyenda
+  theme(axis.line = element_line(size = 1.2, color = "black"),
+        axis.title = element_text(face = "bold"),
+        axis.text = element_text(face = "bold"),
+        legend.title = element_text(face = "bold"),
+        legend.text = element_text(face = "bold")) +
+  scale_x_continuous(breaks = seq(min(Curvas_amplif3$Ciclos),
+                                  max(Curvas_amplif3$Ciclos),
+                                  by = 5)) +
+  scale_y_continuous(breaks = seq(min(Curvas_amplif2$Marian),
+                                  max(Curvas_amplif2$Marian),
+                                  by = 500),
+                     labels = scales::number_format(accuracy = 500)) +
+  scale_color_manual(values = c("Marian" = "#5be4ac", "Manuel" = "#c2a235"))  # Definir colores manualmente
+
+Grafica_amplif_equipo
+
+```
